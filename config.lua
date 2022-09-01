@@ -175,6 +175,12 @@ linters.setup {
   },
 }
 
+lvim.builtin.which_key.mappings["l"]["f"] = {
+  function()
+    require("lvim.lsp.utils").format { timeout_ms = 2000 }
+  end,
+  "Format",
+}
 -- Additional Plugins
 -- lvim.plugins = {
 --     {"folke/tokyonight.nvim"},
