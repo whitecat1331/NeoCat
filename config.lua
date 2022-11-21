@@ -195,6 +195,11 @@ lvim.builtin.which_key.mappings["l"]["f"] = {
 --   -- enable wrap mode for json files only
 --   command = "setlocal wrap",
 -- })
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = { "*.py", },
+  -- enable wrap mode for json files only
+  command = "lua require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')",
+})
 -- vim.api.nvim_create_autocmd("FileType", {
 --   pattern = "zsh",
 --   callback = function()
@@ -202,3 +207,9 @@ lvim.builtin.which_key.mappings["l"]["f"] = {
 --     require("nvim-treesitter.highlight").attach(0, "bash")
 --   end,
 -- })
+-- Debug--
+lvim.plugins = {
+  {
+    "mfussenegger/nvim-dap-python",
+  },
+}
