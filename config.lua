@@ -178,9 +178,9 @@ lvim.plugins = {
   { "simrat39/rust-tools.nvim" },
 
 }
-local function run(start_command)
+local function set_run(start_command)
   local full_file_path = vim.fn.expand('%:p')
-  local execution = "<cmd>" .. ":!" .. start_command .. full_file_path .. "<cr>"
+  local execution = "<cmd>" .. ":!" .. start_command .. " " .. full_file_path .. "<cr>"
   lvim.builtin.which_key.mappings["r"] = { execution, "Run" }
 end
 
@@ -196,8 +196,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
   -- enable debug for python files
   callback = function()
     require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
-    local start_command = "/usr/bin/python3 "
-    run(start_command)
+    local start_command = "/usr/bin/python3"
+    set_run(start_command)
 
   end,
 })
@@ -209,6 +209,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
     lvim.builtin.which_key.mappings["ds"] = {
       "<cmd>:RustDebuggables<CR>", "Start"
     }
+    local start_command = "/home/patrick/.cargo/bin/cargo run"
+    set_run(start_command)
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
@@ -245,5 +247,3 @@ local opts = {
 
 -- Normal setup
 require('rust-tools').setup(opts)
--- set leader r to run
--- set autochdir
