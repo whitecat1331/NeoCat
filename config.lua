@@ -64,6 +64,7 @@ lvim.keys.visual_mode["S"] = ":s///g<left><left><left>"
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
+lvim.builtin.which_key.mappings["a"] = { "<cmd>set autochdir<cr>", "autchdir" }
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -177,6 +178,11 @@ lvim.plugins = {
   { "simrat39/rust-tools.nvim" },
 
 }
+local function run(start_command)
+  local full_file_path = vim.fn.expand('%:p')
+  local execution = "<cmd>" .. ":!" .. start_command .. full_file_path .. "<cr>"
+  lvim.builtin.which_key.mappings["r"] = { execution, "Run" }
+end
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -188,7 +194,12 @@ vim.api.nvim_create_autocmd("BufEnter", {
   pattern = { "*.py", },
   -- enable wrap mode for json files only
   -- enable debug for python files
-  command = "lua require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')",
+  callback = function()
+    require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+    local start_command = "/usr/bin/python3 "
+    run(start_command)
+
+  end,
 })
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = { "*.rs", },
@@ -196,7 +207,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   -- enable debug for python files
   callback = function()
     lvim.builtin.which_key.mappings["ds"] = {
-      "<cmd>:RustDebuggables<CR>", "Debug Rust"
+      "<cmd>:RustDebuggables<CR>", "Start"
     }
   end,
 })
@@ -234,3 +245,5 @@ local opts = {
 
 -- Normal setup
 require('rust-tools').setup(opts)
+-- set leader r to run
+-- set autochdir
