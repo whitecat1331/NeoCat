@@ -13,6 +13,7 @@ lvim.log.level = "warn"
 lvim.format_on_save.enabled = true
 lvim.colorscheme = "lunar"
 vim.opt.relativenumber = true
+vim.opt.mouse = ""
 
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -22,7 +23,14 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["S"] = ":%s///g<left><left><left>"
+lvim.keys.normal_mode["-"] = "o<esc>"
+lvim.keys.normal_mode["_"] = "O<esc>"
+lvim.keys.normal_mode["<C-h>"] = ":wincmd h<cr>"
+lvim.keys.normal_mode["<C-j>"] = ":wincmd j<cr>"
+lvim.keys.normal_mode["<C-k>"] = ":wincmd k<cr>"
+lvim.keys.normal_mode["<C-l>"] = ":wincmd l<cr>"
 lvim.keys.visual_mode["S"] = ":s///g<left><left><left>"
+
 
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
@@ -65,6 +73,7 @@ lvim.keys.visual_mode["S"] = ":s///g<left><left><left>"
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
 lvim.builtin.which_key.mappings["a"] = { "<cmd>set autochdir<cr>", "autchdir" }
+
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -179,8 +188,9 @@ lvim.plugins = {
 
 }
 local function set_run(start_command)
-  local full_file_path = vim.fn.expand('%:p')
-  local execution = "<cmd>" .. ":!" .. start_command .. " " .. full_file_path .. "<cr>"
+  -- local execution = "<cmd>" .. ":!" .. start_command .. " " .. full_file_path .. "<cr>"
+  local execution = "<cmd>" .. start_command .. "<cr>"
+
   lvim.builtin.which_key.mappings["r"] = { execution, "Run" }
 end
 
@@ -196,7 +206,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
   -- enable debug for python files
   callback = function()
     require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
-    local start_command = "/usr/bin/python3"
+    local full_file_path = vim.fn.expand('%:p')
+    local cwd = vim.fn.expand("%:h")
+    local start_command = "!cd %:h && /usr/bin/python3 " .. full_file_path
+    print(start_command)
     set_run(start_command)
 
   end,
@@ -209,7 +222,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
     lvim.builtin.which_key.mappings["ds"] = {
       "<cmd>:RustDebuggables<CR>", "Start"
     }
-    local start_command = "/home/patrick/.cargo/bin/cargo run"
+    local start_command = ":RustRunnables<cr>"
     set_run(start_command)
   end,
 })
