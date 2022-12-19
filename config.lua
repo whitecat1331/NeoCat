@@ -159,8 +159,8 @@ lvim.builtin.treesitter.highlight.enable = true
 -- end
 
 -- set a formatter, this will override the language server formatting capabilities (if it exists)
-local formatters = require "lvim.lsp.null-ls.formatters"
-formatters.setup {
+local formatters = require("lvim.lsp.null-ls.formatters")
+formatters.setup({
   { command = "black", filetypes = { "python" } },
   { command = "isort", filetypes = { "python" } },
   {
@@ -172,11 +172,11 @@ formatters.setup {
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
     filetypes = { "typescript", "typescriptreact" },
   },
-}
+})
 
 -- set additional linters
-local linters = require "lvim.lsp.null-ls.linters"
-linters.setup {
+local linters = require("lvim.lsp.null-ls.linters")
+linters.setup({
   { command = "flake8", filetypes = { "python" } },
   {
     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -190,7 +190,7 @@ linters.setup {
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
     filetypes = { "javascript", "python" },
   },
-}
+})
 
 -- Additional Plugins
 lvim.plugins = {
@@ -200,14 +200,19 @@ lvim.plugins = {
   },
   { "mfussenegger/nvim-dap-python" },
   { "simrat39/rust-tools.nvim" },
-
+  {
+    "npxbr/glow.nvim",
+    ft = { "markdown" }
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    run = "cd app && npm install",
+    ft = "markdown",
+    config = function()
+      vim.g.mkdp_auto_start = 1
+    end,
+  },
 }
-local function set_run(start_command)
-  -- local execution = "<cmd>" .. ":!" .. start_command .. " " .. full_file_path .. "<cr>"
-  local execution = "<cmd>" .. start_command .. "<cr>"
-
-  lvim.builtin.which_key.mappings["r"] = { execution, "Run" }
-end
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 vim.api.nvim_create_autocmd("BufEnter", {
@@ -216,26 +221,26 @@ vim.api.nvim_create_autocmd("BufEnter", {
   command = "setlocal wrap",
 })
 vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.py", },
+  pattern = { "*.py" },
   -- enable wrap mode for json files only
   -- enable debug for python files
   callback = function()
-    require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
-    local full_file_path = vim.fn.expand('%:p')
+    require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
+    local full_file_path = vim.fn.expand("%:p")
     local cwd = vim.fn.expand("%:h")
     local start_command = "!cd %:h && /usr/bin/python3 " .. full_file_path
     print(start_command)
     set_run(start_command)
-
   end,
 })
 vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*.rs", },
+  pattern = { "*.rs" },
   -- enable wrap mode for json files only
   -- enable debug for python files
   callback = function()
     lvim.builtin.which_key.mappings["ds"] = {
-      "<cmd>:RustDebuggables<CR>", "Start"
+      "<cmd>:RustDebuggables<CR>",
+      "Start",
     }
     local start_command = ":RustRunnables<cr>"
     set_run(start_command)
@@ -261,17 +266,16 @@ vim.api.nvim_create_autocmd("FileType", {
 --  },
 --})
 -- Update this path
-local extension_path = vim.env.HOME .. '/.vscode/extensions/vadimcn.vscode-lldb-1.8.1/'
-local codelldb_path = extension_path .. 'adapter/codelldb'
-local liblldb_path = extension_path .. 'lldb/lib/liblldb.so'
+local extension_path = vim.env.HOME .. "/.vscode/extensions/vadimcn.vscode-lldb-1.8.1/"
+local codelldb_path = extension_path .. "adapter/codelldb"
+local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 
 local opts = {
   -- ... other configs
   dap = {
-    adapter = require('rust-tools.dap').get_codelldb_adapter(
-      codelldb_path, liblldb_path)
-  }
+    adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path),
+  },
 }
 
 -- Normal setup
-require('rust-tools').setup(opts)
+require("rust-tools").setup(opts)
