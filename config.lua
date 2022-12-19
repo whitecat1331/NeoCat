@@ -23,14 +23,18 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["S"] = ":%s///g<left><left><left>"
-lvim.keys.normal_mode["-"] = "o<esc>"
-lvim.keys.normal_mode["_"] = "O<esc>"
 lvim.keys.normal_mode["<C-h>"] = ":wincmd h<cr>"
 lvim.keys.normal_mode["<C-j>"] = ":wincmd j<cr>"
 lvim.keys.normal_mode["<C-k>"] = ":wincmd k<cr>"
 lvim.keys.normal_mode["<C-l>"] = ":wincmd l<cr>"
+lvim.keys.normal_mode["<A-o>"] = "o<esc>"
+lvim.keys.normal_mode["<A-O>"] = "O<esc>"
+lvim.keys.normal_mode["<C-j>"] = "<C-d>zz"
+lvim.keys.normal_mode["<C-k>"] = "<C-u>zz"
+lvim.keys.visual_mode["<C-j>"] = "<C-d>zz"
+lvim.keys.visual_mode["<C-k>"] = "<C-u>zz"
 lvim.keys.visual_mode["S"] = ":s///g<left><left><left>"
-
+lvim.keys.visual_mode["p"] = "\"_dP"
 
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
@@ -73,7 +77,18 @@ lvim.keys.visual_mode["S"] = ":s///g<left><left><left>"
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
 lvim.builtin.which_key.mappings["a"] = { "<cmd>set autochdir<cr>", "autchdir" }
+lvim.builtin.which_key.mappings["m"] = {
+  name = "Markdown",
+  g = { "<cmd>Glow<cr>", "Glow" },
+  m = { "<cmd>MarkdownPreview<cr>", "Markdown Preview" },
 
+}
+local function set_run(start_command)
+  -- local execution = "<cmd>" .. ":!" .. start_command .. " " .. full_file_path .. "<cr>"
+  local execution = "<cmd>" .. start_command .. "<cr>"
+
+  lvim.builtin.which_key.mappings["r"] = { execution, "Run" }
+end
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
