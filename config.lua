@@ -23,16 +23,8 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["S"] = ":%s///g<left><left><left>"
-lvim.keys.normal_mode["<C-h>"] = ":wincmd h<cr>"
-lvim.keys.normal_mode["<C-j>"] = ":wincmd j<cr>"
-lvim.keys.normal_mode["<C-k>"] = ":wincmd k<cr>"
-lvim.keys.normal_mode["<C-l>"] = ":wincmd l<cr>"
-lvim.keys.normal_mode["<A-o>"] = "o<esc>"
-lvim.keys.normal_mode["<A-O>"] = "O<esc>"
-lvim.keys.normal_mode["<C-j>"] = "<C-d>zz"
-lvim.keys.normal_mode["<C-k>"] = "<C-u>zz"
-lvim.keys.visual_mode["<C-j>"] = "<C-d>zz"
-lvim.keys.visual_mode["<C-k>"] = "<C-u>zz"
+lvim.keys.normal_mode["<A-l>"] = "o<esc>"
+lvim.keys.normal_mode["<A-L>"] = "O<esc>"
 lvim.keys.visual_mode["S"] = ":s///g<left><left><left>"
 lvim.keys.visual_mode["p"] = "\"_dP"
 
@@ -279,3 +271,5 @@ local opts = {
 
 -- Normal setup
 require("rust-tools").setup(opts)
+
+lvim.builtin.terminal.open_mapping = "<c-t>"
