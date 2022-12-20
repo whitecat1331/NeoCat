@@ -23,8 +23,12 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["S"] = ":%s///g<left><left><left>"
-lvim.keys.normal_mode["<A-l>"] = "o<esc>"
-lvim.keys.normal_mode["<A-L>"] = "O<esc>"
+lvim.keys.normal_mode["<A-n>"] = "o<esc>"
+lvim.keys.normal_mode["<A-N>"] = "O<esc>"
+lvim.keys.normal_mode["<A-d>"] = "zz<C-d>zz"
+lvim.keys.normal_mode["<A-u>"] = "zz<C-u>zz"
+-- lvim.keys.normal_mode["<A-d>"] = ":vsplit<cr>"
+-- lvim.keys.normal_mode["<A-u>"] = ":split<cr>"
 lvim.keys.visual_mode["S"] = ":s///g<left><left><left>"
 lvim.keys.visual_mode["p"] = "\"_dP"
 
@@ -57,6 +61,12 @@ lvim.keys.visual_mode["p"] = "\"_dP"
 -- lvim.builtin.theme.options.dim_inactive = true
 -- lvim.builtin.theme.options.style = "storm"
 
+
+
+
+
+
+
 -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 -- lvim.builtin.which_key.mappings["t"] = {
@@ -75,6 +85,12 @@ lvim.builtin.which_key.mappings["m"] = {
   m = { "<cmd>MarkdownPreview<cr>", "Markdown Preview" },
 
 }
+lvim.builtin.which_key.mappings["W"] = {
+  name = "Window",
+  l = { "<cmd>:vsplit<cr>", "Vertical Split" },
+  j = { "<cmd>:split<cr>", "Horizontal Split" },
+}
+
 local function set_run(start_command)
   -- local execution = "<cmd>" .. ":!" .. start_command .. " " .. full_file_path .. "<cr>"
   local execution = "<cmd>" .. start_command .. "<cr>"
